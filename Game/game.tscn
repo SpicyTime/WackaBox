@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://bqfnsnp5r10qq"]
+
+[ext_resource type="PackedScene" uid="uid://dhpyvay3tx2wq" path="res://Game/Player/player.tscn" id="1_bk3v5"]
+[ext_resource type="Texture2D" uid="uid://dibk8l56rt2e1" path="res://Assets/Sprites/Box.png" id="2_7raqb"]
+[ext_resource type="Script" uid="uid://bje2vj8s1f7mx" path="res://Game/box.gd" id="3_jcm6v"]
+[ext_resource type="Script" uid="uid://w5o6lb26qbow" path="res://HealthSystem/health.gd" id="3_qmv3x"]
+[ext_resource type="PackedScene" uid="uid://dfdc6vokw7rtx" path="res://HealthSystem/hurt_box.tscn" id="5_qmv3x"]
+[ext_resource type="PackedScene" uid="uid://cyh2huw1snbq5" path="res://UI/hud.tscn" id="6_qmv3x"]
+[ext_resource type="Texture2D" uid="uid://db3myhhiix61t" path="res://Assets/Sprites/Background.png" id="7_oomkl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oomkl"]
+size = Vector2(24, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_buohc"]
+size = Vector2(28, 30)
+
+[node name="Game" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("1_bk3v5")]
+z_index = 2
+position = Vector2(-27, 0)
+
+[node name="Box" type="StaticBody2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+script = ExtResource("3_jcm6v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Box"]
+shape = SubResource("RectangleShape2D_oomkl")
+
+[node name="Health" type="Node" parent="Box"]
+script = ExtResource("3_qmv3x")
+metadata/_custom_type_script = "uid://w5o6lb26qbow"
+
+[node name="Sprite2D" type="Sprite2D" parent="Box"]
+texture = ExtResource("2_7raqb")
+
+[node name="HurtBox" parent="Box" node_paths=PackedStringArray("health") instance=ExtResource("5_qmv3x")]
+health = NodePath("../Health")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Box/HurtBox"]
+shape = SubResource("RectangleShape2D_buohc")
+
+[node name="Hud" parent="." instance=ExtResource("6_qmv3x")]
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("7_oomkl")

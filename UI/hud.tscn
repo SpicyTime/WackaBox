@@ -1,0 +1,200 @@
+[gd_scene load_steps=13 format=3 uid="uid://cyh2huw1snbq5"]
+
+[ext_resource type="Texture2D" uid="uid://bu7ayk8ilxxn0" path="res://Assets/Sprites/UI/Outline.png" id="1_64ctp"]
+[ext_resource type="Script" uid="uid://c4abmxijpyg8d" path="res://UI/hud.gd" id="1_b1lf8"]
+[ext_resource type="Texture2D" uid="uid://dtoelinwt782l" path="res://Assets/Sprites/UI/Bar.png" id="2_8sq4i"]
+[ext_resource type="Theme" uid="uid://bbdw604g1euhr" path="res://Themes/label.tres" id="2_rnl6m"]
+[ext_resource type="FontFile" uid="uid://bl1v7447ls7go" path="res://Assets/Fonts/ThaleahFat.ttf" id="3_8sq4i"]
+[ext_resource type="Texture2D" uid="uid://b668xarhovhui" path="res://Assets/Sprites/UI/Boxlet.png" id="5_1ui3w"]
+[ext_resource type="Script" uid="uid://dnqpmmwvj6pwk" path="res://UI/shop.gd" id="7_0j753"]
+[ext_resource type="PackedScene" uid="uid://da1maj70ko8cn" path="res://UI/shop_item.tscn" id="8_i0a73"]
+[ext_resource type="Texture2D" uid="uid://ccwroo4hmie11" path="res://Assets/Sprites/ShopItemIcons/BatStrengthShop.png" id="9_pf7ph"]
+[ext_resource type="Texture2D" uid="uid://c3p6j4ntrytou" path="res://Assets/Sprites/ShopItemIcons/BatSpeedShop.png" id="10_vs5gg"]
+[ext_resource type="Theme" uid="uid://cwk5duyn0sko7" path="res://Themes/button.tres" id="11_23s3h"]
+
+[sub_resource type="Theme" id="Theme_1ui3w"]
+default_font = ExtResource("3_8sq4i")
+
+[node name="Hud" type="Control"]
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_b1lf8")
+
+[node name="DeathScreen" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -66.0
+offset_right = 74.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinScreen" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -65.5
+offset_right = 104.0
+offset_bottom = 66.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WinScreen"]
+layout_mode = 2
+
+[node name="WinLabel" type="Label" parent="WinScreen/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_rnl6m")
+text = "You have successfully whacked the box"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="WinScreen"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="WinScreen/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_1ui3w")
+text = "Whack Again"
+
+[node name="Main" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Meter" type="Panel" parent="Main"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -56.5
+offset_right = 56.5
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Meter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -20.0
+offset_right = 50.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MeterLabel" type="Label" parent="Main/Meter/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rnl6m")
+text = "Whack-o-Meter"
+
+[node name="Whack-O-Meter" type="TextureProgressBar" parent="Main/Meter/VBoxContainer"]
+layout_mode = 2
+max_value = 10.0
+texture_over = ExtResource("1_64ctp")
+texture_progress = ExtResource("2_8sq4i")
+
+[node name="Currency" type="Panel" parent="Main"]
+layout_mode = 1
+offset_right = 50.0
+offset_bottom = 18.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/Currency"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 15.0
+
+[node name="BoxletTexture" type="TextureRect" parent="Main/Currency/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_1ui3w")
+expand_mode = 2
+
+[node name="BoxletLabel" type="Label" parent="Main/Currency/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rnl6m")
+theme_override_font_sizes/font_size = 16
+text = " 0"
+
+[node name="ShopButton" type="Button" parent="Main"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 77.0
+offset_bottom = 11.5
+grow_vertical = 2
+theme = ExtResource("11_23s3h")
+text = "Open Shop"
+
+[node name="ShopPopup" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -28.5
+offset_right = 22.0
+offset_bottom = 52.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_0j753")
+
+[node name="GridContainer" type="GridContainer" parent="ShopPopup"]
+layout_mode = 2
+columns = 5
+
+[node name="ShopItem" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+label_text = "Bat Strength"
+texture = ExtResource("9_pf7ph")
+price = 5
+
+[node name="ShopItem2" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+label_text = "Bat Speed"
+texture = ExtResource("10_vs5gg")
+price = 5
+effect = 1
+
+[node name="ExitShop" type="Button" parent="ShopPopup"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("11_23s3h")
+theme_override_font_sizes/font_size = 8
+text = "Exit"
+
+[connection signal="pressed" from="WinScreen/MarginContainer2/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Main/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="ShopPopup/ExitShop" to="." method="_on_exit_shop_pressed"]
