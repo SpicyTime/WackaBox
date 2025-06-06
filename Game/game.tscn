@@ -19,6 +19,7 @@ size = Vector2(28, 30)
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Player" parent="." instance=ExtResource("1_bk3v5")]
+unique_name_in_owner = true
 z_index = 2
 position = Vector2(-27, 0)
 
@@ -38,6 +39,7 @@ metadata/_custom_type_script = "uid://w5o6lb26qbow"
 texture = ExtResource("2_7raqb")
 
 [node name="HurtBox" parent="Box" node_paths=PackedStringArray("health") instance=ExtResource("5_qmv3x")]
+collision_mask = 2
 health = NodePath("../Health")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Box/HurtBox"]

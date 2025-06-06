@@ -7,5 +7,9 @@ signal received_damage(damage: float)
 
 # Game Manager
 signal boxlet_count_changed(new_value)
-
+signal game_restart
+# Player
+signal player_died
+# Box
+signal box_died
 # Shop Item

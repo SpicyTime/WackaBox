@@ -23,10 +23,10 @@ region = Rect2(9, 9, 9, 9)
 [sub_resource type="SpriteFrames" id="SpriteFrames_2r06b"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 6.5,
 "texture": SubResource("AtlasTexture_mqa8a")
 }, {
-"duration": 1.0,
+"duration": 1.2,
 "texture": SubResource("AtlasTexture_6ngyg")
 }, {
 "duration": 1.0,
@@ -35,7 +35,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h0mjt")
 }],
-"loop": true,
+"loop": false,
 "name": &"Popup",
 "speed": 5.0
 }]
@@ -43,7 +43,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_32fqe"]
 radius = 4.0
 
-[node name="Spikes" type="AnimatedSprite2D"]
+[node name="Spikes" type="AnimatedSprite2D" groups=["Spikes"]]
 sprite_frames = SubResource("SpriteFrames_2r06b")
 animation = &"Popup"
 script = ExtResource("2_htjhu")
@@ -55,3 +55,5 @@ metadata/_custom_type_script = "uid://cjmxk6hxcnixy"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("CircleShape2D_32fqe")
 disabled = true
+
+[connection signal="frame_changed" from="." to="." method="_on_frame_changed"]

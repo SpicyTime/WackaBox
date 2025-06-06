@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://rvcj4koopl7r" path="res://Assets/Sprites/Characters/SwingAnim.png" id="4_vh1aq"]
 [ext_resource type="Script" uid="uid://cjmxk6hxcnixy" path="res://HealthSystem/hit_box.gd" id="5_ch4ko"]
 [ext_resource type="Script" uid="uid://w5o6lb26qbow" path="res://HealthSystem/health.gd" id="5_segth"]
-[ext_resource type="Script" uid="uid://bq3tsqyd0x3or" path="res://HealthSystem/hurt_box.gd" id="7_vh1aq"]
+[ext_resource type="PackedScene" uid="uid://dfdc6vokw7rtx" path="res://HealthSystem/hurt_box.tscn" id="7_ch4ko"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ch4ko"]
 atlas = ExtResource("2_s3asc")
@@ -79,11 +79,11 @@ animations = [{
 radius = 4.0
 height = 18.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_db2hk"]
-size = Vector2(10, 16)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ch4ko"]
 size = Vector2(12.5, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_db2hk"]
+size = Vector2(10, 16)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
@@ -101,20 +101,16 @@ shape = SubResource("CapsuleShape2D_s3asc")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("5_segth")
+max_health = 1
+health = 1
 metadata/_custom_type_script = "uid://w5o6lb26qbow"
-
-[node name="HurtBox" type="Area2D" parent="." node_paths=PackedStringArray("health")]
-script = ExtResource("7_vh1aq")
-health = NodePath("../Health")
-metadata/_custom_type_script = "uid://bq3tsqyd0x3or"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
-shape = SubResource("RectangleShape2D_db2hk")
 
 [node name="SwingCoolDown" type="Timer" parent="."]
 one_shot = true
 
 [node name="BatHitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("5_ch4ko")
 metadata/_custom_type_script = "uid://cjmxk6hxcnixy"
 
@@ -122,6 +118,12 @@ metadata/_custom_type_script = "uid://cjmxk6hxcnixy"
 position = Vector2(6.75, 1.5)
 shape = SubResource("RectangleShape2D_ch4ko")
 disabled = true
+
+[node name="HurtBox" parent="." node_paths=PackedStringArray("health") instance=ExtResource("7_ch4ko")]
+health = NodePath("../Health")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("RectangleShape2D_db2hk")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="SwingCoolDown" to="." method="_on_swing_cool_down_timeout"]

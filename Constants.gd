@@ -1,5 +1,5 @@
 extends Node
-enum PowerupType  {
+enum UpgradeType  {
 	STRENGTH,
 	SWING_SPEED
 }

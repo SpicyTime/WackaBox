@@ -38,6 +38,24 @@ offset_bottom = 66.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="VBoxContainer" type="VBoxContainer" parent="DeathScreen"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="DeathLabel" type="Label" parent="DeathScreen/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_rnl6m")
+text = "You died!"
+
+[node name="RestartButton" type="Button" parent="DeathScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("11_23s3h")
+text = "Retry
+"
+
 [node name="WinScreen" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
@@ -176,7 +194,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 label_text = "Bat Strength"
 texture = ExtResource("9_pf7ph")
-price = 5
+base_price = 5
 
 [node name="ShopItem2" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
 layout_mode = 2
@@ -184,8 +202,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 label_text = "Bat Speed"
 texture = ExtResource("10_vs5gg")
-price = 5
-effect = 1
+base_price = 5
+upgrade = 1
 
 [node name="ExitShop" type="Button" parent="ShopPopup"]
 layout_mode = 2
@@ -195,6 +213,7 @@ theme = ExtResource("11_23s3h")
 theme_override_font_sizes/font_size = 8
 text = "Exit"
 
+[connection signal="pressed" from="DeathScreen/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="WinScreen/MarginContainer2/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Main/ShopButton" to="." method="_on_shop_button_pressed"]
 [connection signal="pressed" from="ShopPopup/ExitShop" to="." method="_on_exit_shop_pressed"]
