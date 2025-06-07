@@ -31,5 +31,6 @@ func advance():
 	box_health_node.max_health += roundi(box_health_node.max_health / 2)
 	box_health_node.health = box_health_node.max_health
 	reset_game()
+	
 func add_upgrade_to_player(upgrade) -> void:
 	player.add_upgrade(upgrade)

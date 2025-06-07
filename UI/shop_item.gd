@@ -23,7 +23,7 @@ func get_upgrade() -> Constants.UpgradeType:
 	
 func _ready() -> void:
 	price = base_price
-	print(base_price)
+	 
 	$NameLabel.text = label_text
 	$TextureRect.texture = texture
 	$Price/PriceLabel.text = str(base_price)
