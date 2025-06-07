@@ -1,5 +1,10 @@
 extends Node
-enum UpgradeType  {
+enum UpgradeType{
 	STRENGTH,
-	SWING_SPEED
+	SWING_SPEED,
+	BOXLET_DROP_RATE,
+	BOXLET_DROP,
+	BIGGER_BOXLETS
 }
+const PLAYER_UPGRADES = [UpgradeType.STRENGTH, UpgradeType.SWING_SPEED]
+const BOX_UPGRADES = [UpgradeType.BOXLET_DROP_RATE, UpgradeType.BOXLET_DROP, UpgradeType.BIGGER_BOXLETS]

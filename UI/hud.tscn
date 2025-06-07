@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cyh2huw1snbq5"]
+[gd_scene load_steps=16 format=3 uid="uid://cyh2huw1snbq5"]
 
 [ext_resource type="Texture2D" uid="uid://bu7ayk8ilxxn0" path="res://Assets/Sprites/UI/Outline.png" id="1_64ctp"]
 [ext_resource type="Script" uid="uid://c4abmxijpyg8d" path="res://UI/hud.gd" id="1_b1lf8"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://ccwroo4hmie11" path="res://Assets/Sprites/ShopItemIcons/BatStrengthShop.png" id="9_pf7ph"]
 [ext_resource type="Texture2D" uid="uid://c3p6j4ntrytou" path="res://Assets/Sprites/ShopItemIcons/BatSpeedShop.png" id="10_vs5gg"]
 [ext_resource type="Theme" uid="uid://cwk5duyn0sko7" path="res://Themes/button.tres" id="11_23s3h"]
+[ext_resource type="Texture2D" uid="uid://bjdryn8u8vw3i" path="res://Assets/Sprites/ShopItemIcons/BoxletDropRateIncrease.png" id="12_phrgc"]
+[ext_resource type="Texture2D" uid="uid://pm6raqsyfq7m" path="res://Assets/Sprites/ShopItemIcons/BiggerBoxlets.png" id="13_8nmcf"]
+[ext_resource type="Texture2D" uid="uid://cutv48dypa40k" path="res://Assets/Sprites/ShopItemIcons/BoxletDropIncrease.png" id="14_sab3h"]
 
 [sub_resource type="Theme" id="Theme_1ui3w"]
 default_font = ExtResource("3_8sq4i")
@@ -188,22 +191,54 @@ script = ExtResource("7_0j753")
 layout_mode = 2
 columns = 5
 
-[node name="ShopItem" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+[node name="BatStrength" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 label_text = "Bat Strength"
 texture = ExtResource("9_pf7ph")
 base_price = 5
+max_vert_texture = 15
 
-[node name="ShopItem2" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+[node name="BatSpeed" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 label_text = "Bat Speed"
 texture = ExtResource("10_vs5gg")
 base_price = 5
+max_vert_texture = 15
 upgrade = 1
+
+[node name="BoxletDropRateInc" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+label_text = "Drop Rate"
+texture = ExtResource("12_phrgc")
+base_price = 5
+max_vert_texture = 15
+upgrade = 2
+
+[node name="BiggerBoxlets" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+label_text = "More Boxlets"
+texture = ExtResource("13_8nmcf")
+base_price = 5
+max_vert_texture = 15
+upgrade = 4
+
+[node name="BoxletDropIncrease" parent="ShopPopup/GridContainer" instance=ExtResource("8_i0a73")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+label_text = "Bigger Drop"
+texture = ExtResource("14_sab3h")
+base_price = 5
+max_vert_texture = 15
+upgrade = 3
 
 [node name="ExitShop" type="Button" parent="ShopPopup"]
 layout_mode = 2

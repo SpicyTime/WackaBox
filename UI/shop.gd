@@ -15,7 +15,7 @@ func check_items():
 func buy_item(item: ShopItem):
 	GameManager.set_boxlets(GameManager.boxlet_count - item.price)
 	item.update_price(item.price + roundi(item.price / 2))
-	GameManager.add_upgrade_to_player(item.get_upgrade())
+	GameManager.add_upgrade_to_entity(item.get_upgrade())
 	check_items()
 	
 func _on_buy_button_pressed(item: ShopItem):
@@ -27,5 +27,6 @@ func _ready():
 	for item in items:
 		var item_buy_button = item.get_node("BuyButton")
 		item_buy_button.pressed.connect(func (): _on_buy_button_pressed(item))
+		
 func _on_game_restart():
 	reset_prices()

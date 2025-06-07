@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://vfu8y0b2ypqc"]
+
+[ext_resource type="Texture2D" uid="uid://4neerwru8qla" path="res://Assets/Sprites/Hazards/Arrow.png" id="1_wdubb"]
+[ext_resource type="Script" uid="uid://nakw7cpuf56i" path="res://Hazards/arrow.gd" id="2_khqsa"]
+[ext_resource type="PackedScene" uid="uid://dfdc6vokw7rtx" path="res://HealthSystem/hurt_box.tscn" id="3_1j8bg"]
+[ext_resource type="PackedScene" uid="uid://28te3kt06oqb" path="res://HealthSystem/hit_box.tscn" id="4_lfeif"]
+[ext_resource type="PackedScene" uid="uid://buufuwcyk4k0l" path="res://HealthSystem/health.tscn" id="5_1j8bg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oncs1"]
+size = Vector2(2, 8)
+
+[node name="Arrow" type="Sprite2D" groups=["Arrows"]]
+texture = ExtResource("1_wdubb")
+script = ExtResource("2_khqsa")
+
+[node name="HurtBox" parent="." node_paths=PackedStringArray("health") instance=ExtResource("3_1j8bg")]
+collision_mask = 2
+health = NodePath("../Health")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("RectangleShape2D_oncs1")
+
+[node name="HitBox" parent="." instance=ExtResource("4_lfeif")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("RectangleShape2D_oncs1")
+
+[node name="Health" parent="." instance=ExtResource("5_1j8bg")]
+max_health = 1
+health = 1

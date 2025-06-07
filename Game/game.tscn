@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bqfnsnp5r10qq"]
+[gd_scene load_steps=11 format=3 uid="uid://bqfnsnp5r10qq"]
 
 [ext_resource type="PackedScene" uid="uid://dhpyvay3tx2wq" path="res://Game/Player/player.tscn" id="1_bk3v5"]
 [ext_resource type="Texture2D" uid="uid://dibk8l56rt2e1" path="res://Assets/Sprites/Box.png" id="2_7raqb"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dfdc6vokw7rtx" path="res://HealthSystem/hurt_box.tscn" id="5_qmv3x"]
 [ext_resource type="PackedScene" uid="uid://cyh2huw1snbq5" path="res://UI/hud.tscn" id="6_qmv3x"]
 [ext_resource type="Texture2D" uid="uid://db3myhhiix61t" path="res://Assets/Sprites/Background.png" id="7_oomkl"]
+[ext_resource type="PackedScene" uid="uid://vfu8y0b2ypqc" path="res://Hazards/arrow.tscn" id="8_buohc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oomkl"]
 size = Vector2(24, 28)
@@ -54,3 +55,6 @@ offset_bottom = 90.0
 [node name="Background" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("7_oomkl")
+
+[node name="Arrow" parent="." instance=ExtResource("8_buohc")]
+position = Vector2(15, 29)
