@@ -6,7 +6,7 @@ extends VBoxContainer
 @export var max_vert_texture: int
 @export var upgrade: Constants.UpgradeType
 @onready var price: int 
-
+var times_bought = 0
 func reset_price() -> void:
 	price = base_price
 	$Price/PriceLabel.text = str(price)
@@ -20,7 +20,7 @@ func enable() -> void:
 func update_price(value: int) -> void:
 	price = value
 	$Price/PriceLabel.text = str(value)
-	
+	times_bought += 1
 func get_upgrade() -> Constants.UpgradeType:
 	return upgrade
 	
@@ -37,7 +37,7 @@ func pad_texture_vertically(texture: Texture2D, top: int, bottom: int) -> Textur
 	var image := texture.get_image()
 	var original_size := image.get_size()
 
-	var new_width := original_size.x + 10
+	var new_width := original_size.x
 	var new_height := original_size.y + top + bottom
 
 	var new_image := Image.create(new_width, new_height, false, image.get_format())
@@ -46,7 +46,7 @@ func pad_texture_vertically(texture: Texture2D, top: int, bottom: int) -> Textur
 	new_image.blit_rect(
 		image,
 		Rect2i(Vector2i.ZERO, original_size),
-		Vector2i(5, top)
+		Vector2i(0, top)
 	)
 
 	return ImageTexture.create_from_image(new_image)

@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dfdc6vokw7rtx" path="res://HealthSystem/hurt_box.tscn" id="5_qmv3x"]
 [ext_resource type="PackedScene" uid="uid://cyh2huw1snbq5" path="res://UI/hud.tscn" id="6_qmv3x"]
 [ext_resource type="Texture2D" uid="uid://db3myhhiix61t" path="res://Assets/Sprites/Background.png" id="7_oomkl"]
-[ext_resource type="PackedScene" uid="uid://vfu8y0b2ypqc" path="res://Hazards/arrow.tscn" id="8_buohc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oomkl"]
 size = Vector2(24, 28)
@@ -15,21 +14,27 @@ size = Vector2(24, 28)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_buohc"]
 size = Vector2(28, 30)
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_oomkl"]
+distance = 3.0
+
 [node name="Game" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [-36.0]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Player" parent="." instance=ExtResource("1_bk3v5")]
 unique_name_in_owner = true
 z_index = 2
-position = Vector2(-27, 0)
+position = Vector2(16, -27)
 
-[node name="Box" type="StaticBody2D" parent="."]
+[node name="Box" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
 unique_name_in_owner = true
 z_index = 1
 script = ExtResource("3_jcm6v")
+player = NodePath("../Player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Box"]
+visible = false
 shape = SubResource("RectangleShape2D_oomkl")
 
 [node name="Health" type="Node" parent="Box"]
@@ -40,11 +45,16 @@ metadata/_custom_type_script = "uid://w5o6lb26qbow"
 texture = ExtResource("2_7raqb")
 
 [node name="HurtBox" parent="Box" node_paths=PackedStringArray("health") instance=ExtResource("5_qmv3x")]
+visible = false
 collision_mask = 2
 health = NodePath("../Health")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Box/HurtBox"]
 shape = SubResource("RectangleShape2D_buohc")
+
+[node name="MoveCooldown" type="Timer" parent="Box"]
+wait_time = 3.0
+one_shot = true
 
 [node name="Hud" parent="." instance=ExtResource("6_qmv3x")]
 offset_left = -160.0
@@ -53,8 +63,35 @@ offset_right = 160.0
 offset_bottom = 90.0
 
 [node name="Background" type="Sprite2D" parent="."]
-visible = false
 texture = ExtResource("7_oomkl")
 
-[node name="Arrow" parent="." instance=ExtResource("8_buohc")]
-position = Vector2(15, 29)
+[node name="WorldBoundaries" type="Node" parent="."]
+
+[node name="Top" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(-3, -88)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Top"]
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_oomkl")
+
+[node name="Bottom" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(-1, 90)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Bottom"]
+shape = SubResource("WorldBoundaryShape2D_oomkl")
+
+[node name="Right" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(-161, -2)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Right"]
+shape = SubResource("WorldBoundaryShape2D_oomkl")
+
+[node name="Left" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(155, -3)
+rotation = 4.71239
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Left"]
+shape = SubResource("WorldBoundaryShape2D_oomkl")
+
+[connection signal="timeout" from="Box/MoveCooldown" to="Box" method="_on_move_cooldown_timeout"]

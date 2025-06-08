@@ -1,9 +1,10 @@
 extends Control
-@onready var box: StaticBody2D = %Box
+@onready var box: CharacterBody2D = %Box
 @onready var player: CharacterBody2D = %Player
 @onready var whack_o_meter: TextureProgressBar = $"Main/Meter/VBoxContainer/Whack-O-Meter"
 @onready var boxlet_label: Label = $Main/Currency/HBoxContainer/BoxletLabel
 var restart: bool = false
+
 func _open_shop():
 	$ShopPopup.visible = true
 	$ShopPopup.check_items()

@@ -2,8 +2,8 @@ extends Node
 @onready var tree_root = get_tree().root
 @onready var player = get_tree().root.get_node("Game/Player")
 @onready var box = get_tree().root.get_node("Game/Box")
-var boxlet_count: int = 0 : set = set_boxlets
-var win_times: int = 0
+var boxlet_count: int = 100000 : set = set_boxlets
+var win_times: int = 1
 var lives_left: int = 3
 
 func get_player_position() -> Vector2:
@@ -31,9 +31,7 @@ func reset_game() -> void:
 		arrow.queue_free()
 		
 func advance():
-	var box_health_node: Health = box.get_node("Health")
-	box_health_node.max_health += roundi(box_health_node.max_health / 2)
-	box_health_node.health = box_health_node.max_health
+	box.increase_health()
 	reset_game()
 	
 func add_upgrade_to_entity(upgrade) -> void:

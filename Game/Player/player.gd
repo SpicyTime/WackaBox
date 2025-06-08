@@ -11,6 +11,7 @@ var _swinging: bool = false
 var _orig_bat_hitbox_pos: Vector2 = Vector2.ZERO
 var upgrades_counter: Dictionary
 var _base_cooldown_time: float
+
 func clear_upgrades() -> void:
 	upgrades_counter.clear()
 func handle_flip(dir: int) -> void:
@@ -31,14 +32,12 @@ func add_upgrade(upgrade: Constants.UpgradeType):
 	
 func apply_upgrade_effect(upgrade):
 	if upgrade == Constants.UpgradeType.STRENGTH:
-		_add_strength(3)
+		_add_strength($BatHitBox.base_damage * pow(1.5, upgrades_counter[upgrade]))
 	elif upgrade == Constants.UpgradeType.SWING_SPEED:
 		_reduce_swing_speed(0.15)
  
- 
-			
 func _add_strength(amount: int):
-	$BatHitBox.damage +=  amount
+	$BatHitBox.damage = amount 
 	
 func _reduce_swing_speed(amount: float):
 	$SwingCoolDown.wait_time -= $SwingCoolDown.wait_time *  amount
@@ -92,6 +91,7 @@ func _on_health_depleted(health_node):
 func _on_game_restart():
 	clear_upgrades()
 	$SwingCoolDown.wait_time = _base_cooldown_time
+	
 func _on_swing_cool_down_timeout() -> void:
 	_can_swing = true
 	
@@ -100,3 +100,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		bat_hitbox_collider.disabled = true
 		_swinging = false
 		
+
+
+ 

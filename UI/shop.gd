@@ -14,7 +14,7 @@ func check_items():
 	
 func buy_item(item: ShopItem):
 	GameManager.set_boxlets(GameManager.boxlet_count - item.price)
-	item.update_price(item.price + roundi(item.price / 2))
+	item.update_price(item.base_price * pow(1.5, item.times_bought ))
 	GameManager.add_upgrade_to_entity(item.get_upgrade())
 	check_items()
 	

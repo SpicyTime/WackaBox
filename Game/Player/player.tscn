@@ -97,6 +97,7 @@ frame = 2
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape2D_s3asc")
 
 [node name="Health" type="Node" parent="."]
@@ -109,6 +110,7 @@ metadata/_custom_type_script = "uid://w5o6lb26qbow"
 one_shot = true
 
 [node name="BatHitBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("5_ch4ko")
@@ -120,6 +122,7 @@ shape = SubResource("RectangleShape2D_ch4ko")
 disabled = true
 
 [node name="HurtBox" parent="." node_paths=PackedStringArray("health") instance=ExtResource("7_ch4ko")]
+visible = false
 health = NodePath("../Health")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
