@@ -2,8 +2,8 @@ extends Node
 @onready var tree_root = get_tree().root
 @onready var player = get_tree().root.get_node("Game/Player")
 @onready var box = get_tree().root.get_node("Game/Box")
-var boxlet_count: int = 100000 : set = set_boxlets
-var win_times: int = 1
+var boxlet_count: int = 100 : set = set_boxlets
+var win_times: int = 0
 var lives_left: int = 3
 
 func get_player_position() -> Vector2:
@@ -23,13 +23,9 @@ func restart_game() -> void:
 	win_times = 0
 
 func reset_game() -> void:
-	var spikes = get_tree().get_nodes_in_group("Spikes")
-	for spike in spikes:
-		spike.queue_free()
-	var arrows = get_tree().get_nodes_in_group("Arrows")
-	for arrow in arrows:
-		arrow.queue_free()
-		
+	SignalBus.game_reset.emit()
+	 
+	
 func advance():
 	box.increase_health()
 	reset_game()

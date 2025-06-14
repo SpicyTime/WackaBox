@@ -91,10 +91,9 @@ script = ExtResource("1_s3asc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_segth")
-animation = &"Swing"
+animation = &"Idle"
 autoplay = "Idle"
-frame = 2
-frame_progress = 1.0
+frame_progress = 0.808076
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -129,4 +128,5 @@ health = NodePath("../Health")
 shape = SubResource("RectangleShape2D_db2hk")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
 [connection signal="timeout" from="SwingCoolDown" to="." method="_on_swing_cool_down_timeout"]

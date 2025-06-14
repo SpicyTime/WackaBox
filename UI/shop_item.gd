@@ -33,8 +33,8 @@ func _ready() -> void:
 	if texture_height < max_vert_texture:
 		$TextureRect.texture = pad_texture_vertically($TextureRect.texture, texture_height / 2, texture_height/ 2)
 	
-func pad_texture_vertically(texture: Texture2D, top: int, bottom: int) -> Texture2D:
-	var image := texture.get_image()
+func pad_texture_vertically(item_texture: Texture2D, top: int, bottom: int) -> Texture2D:
+	var image := item_texture.get_image()
 	var original_size := image.get_size()
 
 	var new_width := original_size.x

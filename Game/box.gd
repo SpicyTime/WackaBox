@@ -2,45 +2,47 @@ extends CharacterBody2D
 @export var speed: float = 100.0
 @export var player: CharacterBody2D
 @onready var move_cooldown: Timer = $MoveCooldown
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
+@onready var _orig_pos: Vector2 = position
 var spikes_packed: PackedScene = preload("res://Hazards/spikes.tscn")
-const _min_scoot_distance: int = 40
-const _max_scoot_distance: int = 80
+const _MIN_SCOOT_DISTANCE: int = 40
+const _MAX_SCOOT_DISTANCE: int = 80
+const _SPIKES_SPAWN_RADIUS: float  = 15
+const _HIT_SPEED = 10
+const MAX_SPEED = 100
+const ACCEL = 560
+const FRICTION = 400
 var _min_boxlets: int = 1
 var _max_boxlets: int = 3
 var _swing_count: int = 0
 var _acceptable_swing_count: int = 3
-const _spikes_spawn_radius: float  = 15
 var _min_move_cooldown: float = 0.5
 var _max_move_cooldown: float = 2
 var _falloff: float = 0.5
 var _boxlet_spawn_chance: float = 0.5
 var _target_position: Vector2 = position
 var _dir: Vector2  
-var _can_spawn_spikes: bool = false
-var _can_move: bool = false
+var _target_reached: bool = true
 var _spikes_spawning: bool = false
-
+var _bounced: bool = false
 
 func add_upgrade(upgrade: Constants.UpgradeType):
 	#Other logic
 	_apply_upgrade_effect(upgrade)
 	
-func spawn_spikes(new_position):
+func spawn_spikes(_new_position):
 	var spikes = spikes_packed.instantiate()
 	_swing_count = 0
 	await get_tree().create_timer(randf_range(0.25, 0.75)).timeout
 	get_tree().root.call_deferred("add_child", spikes)
-	spikes.position = Vector2(player.position.x + randf_range(3, _spikes_spawn_radius), player.position.y + randf_range(3, _spikes_spawn_radius))
+	spikes.position = Vector2(player.position.x + randf_range(3, _SPIKES_SPAWN_RADIUS), player.position.y + randf_range(3, _SPIKES_SPAWN_RADIUS))
 	
 func increase_health():
 	var health_node = $Health
 	var multiplier = pow(1.75, GameManager.win_times)
 	health_node.max_health = health_node.base_health * multiplier
 	health_node.health = health_node.max_health
-	
-
-
 	
 func _apply_upgrade_effect(upgrade):
 	if upgrade == Constants.UpgradeType.BOXLET_DROP_RATE:
@@ -58,19 +60,23 @@ func _increase_boxlet_drop():
 func _increase_boxlet_size():
 	_min_boxlets += 1
 	_max_boxlets += 1
-	
-func _handle_hit(damage):
+func _handle_spawns():
 	if _should_drop_boxlets():
 		var amount = _pick_weighted_list()
 		GameManager.add_boxlets(amount)
 	if not _spikes_spawning:
 		_swing_count += 1
-	if _can_move and move_cooldown.is_stopped():
+	if GameManager.win_times >= 1 and move_cooldown.is_stopped():
 		var new_cooldown: float = randf_range(_min_move_cooldown, _max_move_cooldown)
 		move_cooldown.wait_time = new_cooldown
 		move_cooldown.start()
+		
 	if _should_spawn_spikes():
 		spawn_spikes(player.position)
+
+func _handle_hit():
+	velocity = (position - player.position) *  _HIT_SPEED
+	_handle_spawns()
 		
 func _pick_weighted_list() -> int:
 	var weights: Array = []
@@ -100,7 +106,7 @@ func _pick_move_direction():
 	return move_direction.normalized()
 	
 func _should_spawn_spikes() -> bool:
-	if _swing_count >= _acceptable_swing_count and _can_spawn_spikes:
+	if _swing_count >= _acceptable_swing_count and GameManager.win_times >= 2:
 		return true
 	else:
 		return false
@@ -112,26 +118,40 @@ func _ready() -> void:
 	SignalBus.received_damage.connect(_on_received_damage)
 	SignalBus.health_depleted.connect(_on_health_depleted)
 	SignalBus.game_restart.connect(_on_game_restart)
-	if GameManager.win_times >= 1:
-		_can_move = true
-	if GameManager.win_times >= 2:
-		_can_spawn_spikes = true
+	SignalBus.game_reset.connect(_on_game_reset)
 		
 func _physics_process(delta: float) -> void:
-	if position.distance_to(_target_position) > 1.0:
+	if position.distance_to(_target_position) > 1.0 and not _target_reached:
 		_dir = _target_position - position
 		_dir = _dir.normalized()
-		velocity = velocity.move_toward(_dir * speed, 560 * delta)
-		move_and_slide()
+		velocity = velocity.move_toward(_dir * speed, ACCEL * delta)
 	else:
-		velocity = Vector2.ZERO
-		position = _target_position
-		  
-	
-	
+		_target_reached = true
+
+	if velocity != Vector2.ZERO:
+		var collision = move_and_collide(velocity * delta)
+		
+		if collision and (not _bounced) :
+			var is_wall = collision.get_collider()  in get_tree().get_nodes_in_group("Obstacles")
+			var normal = collision.get_normal()
+			velocity = velocity.bounce(normal)
+			_bounced = true
+			var new_mask := player.collision_mask
+			new_mask &= ~2 # Turn off bit 1 (player layer)
+			player.collision_mask = new_mask
+	else:
+		if _bounced:
+			_bounced = false
+			var new_mask := player.collision_mask
+			new_mask |= 2  # Turn off bit 1 (player layer)
+			player.collision_mask = new_mask
+	# Apply friction only when not actively moving toward target
+	if _target_reached:
+		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+
 func _on_received_damage(damage: int, hurtbox: HurtBox) -> void:
 	if hurtbox in get_children():
-		_handle_hit(damage)
+		_handle_hit()
 		
 func _on_health_depleted(health_node: Health):
 	if health_node in get_children():
@@ -142,11 +162,13 @@ func _on_game_restart():
 	_max_boxlets = 3
 	_falloff = 0.5
 	_boxlet_spawn_chance = 0.5
-
+	position = _orig_pos
 	
-
-
+func _on_game_reset():
+	position = _orig_pos
+	_target_position = position
+	velocity = Vector2.ZERO
+	
 func _on_move_cooldown_timeout() -> void:
-	var scoot_distance = randi_range(_min_scoot_distance, _max_scoot_distance)
+	var scoot_distance = randi_range(_MIN_SCOOT_DISTANCE, _MAX_SCOOT_DISTANCE)
 	_target_position = position + _pick_move_direction() * scoot_distance
- 

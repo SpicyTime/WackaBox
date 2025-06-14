@@ -25,16 +25,18 @@ metadata/_edit_horizontal_guides_ = [-36.0]
 [node name="Player" parent="." instance=ExtResource("1_bk3v5")]
 unique_name_in_owner = true
 z_index = 2
-position = Vector2(16, -27)
+position = Vector2(-33, -1)
+collision_mask = 6
 
 [node name="Box" type="CharacterBody2D" parent="." node_paths=PackedStringArray("player")]
 unique_name_in_owner = true
 z_index = 1
+collision_layer = 2
+collision_mask = 6
 script = ExtResource("3_jcm6v")
 player = NodePath("../Player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Box"]
-visible = false
 shape = SubResource("RectangleShape2D_oomkl")
 
 [node name="Health" type="Node" parent="Box"]
@@ -63,33 +65,42 @@ offset_right = 160.0
 offset_bottom = 90.0
 
 [node name="Background" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("7_oomkl")
 
 [node name="WorldBoundaries" type="Node" parent="."]
 
-[node name="Top" type="StaticBody2D" parent="WorldBoundaries"]
+[node name="Top" type="StaticBody2D" parent="WorldBoundaries" groups=["Obstacles"]]
 position = Vector2(-3, -88)
+collision_layer = 2
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Top"]
 rotation = 3.14159
 shape = SubResource("WorldBoundaryShape2D_oomkl")
 
-[node name="Bottom" type="StaticBody2D" parent="WorldBoundaries"]
+[node name="Bottom" type="StaticBody2D" parent="WorldBoundaries" groups=["Obstacles"]]
 position = Vector2(-1, 90)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Bottom"]
 shape = SubResource("WorldBoundaryShape2D_oomkl")
 
-[node name="Right" type="StaticBody2D" parent="WorldBoundaries"]
+[node name="Right" type="StaticBody2D" parent="WorldBoundaries" groups=["Obstacles"]]
 position = Vector2(-161, -2)
 rotation = 1.5708
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Right"]
 shape = SubResource("WorldBoundaryShape2D_oomkl")
 
-[node name="Left" type="StaticBody2D" parent="WorldBoundaries"]
+[node name="Left" type="StaticBody2D" parent="WorldBoundaries" groups=["Obstacles"]]
 position = Vector2(155, -3)
 rotation = 4.71239
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/Left"]
 shape = SubResource("WorldBoundaryShape2D_oomkl")

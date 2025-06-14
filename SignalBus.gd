@@ -8,6 +8,7 @@ signal received_damage(damage: float)
 # Game Manager
 signal boxlet_count_changed(new_value)
 signal game_restart
+signal game_reset
 # Player
 signal player_died
 # Box
