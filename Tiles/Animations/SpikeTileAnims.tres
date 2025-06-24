@@ -1,0 +1,60 @@
+[gd_resource type="SpriteFrames" load_steps=9 format=3 uid="uid://cxe3sccbnos3q"]
+
+[ext_resource type="Texture2D" uid="uid://buys18txlrbei" path="res://Assets/Sprites/Hazards/SpikeFlip.png" id="1_i8iqc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whvru"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrcec"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cd8l2"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bg1m2"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y0l1i"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hogxp"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(20, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hb2nc"]
+atlas = ExtResource("1_i8iqc")
+region = Rect2(0, 20, 10, 10)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whvru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrcec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cd8l2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bg1m2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y0l1i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hogxp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hb2nc")
+}],
+"loop": false,
+"name": &"Flip",
+"speed": 5.0
+}]

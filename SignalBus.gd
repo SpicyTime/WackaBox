@@ -14,3 +14,6 @@ signal player_died
 # Box
 signal box_died
 # Shop Item
+
+#Tiles
+signal tile_flip_finished

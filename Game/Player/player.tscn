@@ -93,7 +93,7 @@ script = ExtResource("1_s3asc")
 sprite_frames = SubResource("SpriteFrames_segth")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.808076
+frame_progress = 0.731638
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

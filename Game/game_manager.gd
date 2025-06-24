@@ -3,7 +3,7 @@ extends Node
 @onready var player = get_tree().root.get_node("Game/Player")
 @onready var box = get_tree().root.get_node("Game/Box")
 var boxlet_count: int = 100 : set = set_boxlets
-var win_times: int = 0
+var win_times: int = 1
 var lives_left: int = 3
 
 func get_player_position() -> Vector2:

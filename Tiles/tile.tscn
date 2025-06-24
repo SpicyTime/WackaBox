@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://cnoivak6d6fnc"]
+
+[ext_resource type="Texture2D" uid="uid://cp7auysxmkvs0" path="res://Assets/Sprites/TileFlip.png" id="1_2ljfi"]
+[ext_resource type="Script" uid="uid://b4ll1upjog6q8" path="res://Tiles/tile.gd" id="2_b16ti"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ljfi"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b16ti"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkiuv"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhx3t"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktfcx"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdexn"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(20, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ub4c8"]
+atlas = ExtResource("1_2ljfi")
+region = Rect2(0, 20, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_71op4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ljfi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b16ti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkiuv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xhx3t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ktfcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdexn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ub4c8")
+}],
+"loop": true,
+"name": &"Flip",
+"speed": 5.0
+}]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("2_b16ti")
+
+[node name="FlipSound" type="AudioStreamPlayer2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_71op4")
+animation = &"Flip"
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]
