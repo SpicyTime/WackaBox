@@ -56,6 +56,7 @@ func _get_input_vector() -> Vector2:
 	elif Input.is_action_pressed("Left"):
 		input_vector.x -= 1
 	return input_vector
+	
 func _ready() -> void:
 	_orig_bat_hitbox_pos = bat_hitbox_collider.position
 	_base_cooldown_time = get_node("SwingCoolDown").wait_time

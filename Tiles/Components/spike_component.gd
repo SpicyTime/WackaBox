@@ -1,10 +1,13 @@
 extends Node2D
-@export var animation_frames: SpriteFrames
 @onready var hitbox_collider: CollisionShape2D = $HitBox/CollisionShape2D
-	
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
+func handle_flip()-> void:
+	animated_sprite_2d.play("Flip")
+	print("Handling Flip")
 func activate():
 	activate_spikes()
-	print("Activating")
+	
 func deactivate():
 	deactivate_spikes()
 	
@@ -14,8 +17,4 @@ func activate_spikes() -> void:
 func deactivate_spikes() -> void:
 	hitbox_collider.disabled = true
 	
-func _ready() -> void:
-	var parent = get_parent()
-	if parent is Tile:
-		parent.get_child(1).sprite_frames = animation_frames
 		 

@@ -5,6 +5,7 @@ extends Node
 var boxlet_count: int = 100 : set = set_boxlets
 var win_times: int = 1
 var lives_left: int = 3
+var tile_nodes: Dictionary
 
 func get_player_position() -> Vector2:
 	return player.position
@@ -24,7 +25,6 @@ func restart_game() -> void:
 
 func reset_game() -> void:
 	SignalBus.game_reset.emit()
-	 
 	
 func advance():
 	box.increase_health()
@@ -35,3 +35,5 @@ func add_upgrade_to_entity(upgrade) -> void:
 		player.add_upgrade(upgrade)
 	elif upgrade in  Constants.BOX_UPGRADES:
 		box.add_upgrade(upgrade)
+		
+	

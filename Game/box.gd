@@ -2,6 +2,7 @@ extends CharacterBody2D
 @export var speed: float = 100.0
 @export var player: CharacterBody2D
 @export var camera: Camera2D
+@export var tile_map: TileMapLayer
 @onready var move_cooldown: Timer = $MoveCooldown
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
@@ -23,16 +24,24 @@ var _target_position: Vector2 = position
 var _dir: Vector2  
 var _target_reached: bool = false
 var _bounced: bool = false
-
 func add_upgrade(upgrade: Constants.UpgradeType):
 	#Other logic
 	_apply_upgrade_effect(upgrade)
 	
-func increase_health():
+func increase_health() -> void:
 	var health_node = $Health
 	var multiplier = pow(1.75, GameManager.win_times)
 	health_node.max_health = health_node.base_health * multiplier
 	health_node.health = health_node.max_health
+	
+ 
+func _flip_tile(component, tile_coords: Vector2, direction: int) -> void:
+	var tile = GameManager.tile_nodes.get(tile_coords)
+	 
+	if tile == null:
+		return
+	  
+	tile.flip(component, direction)
 	
 func _apply_upgrade_effect(upgrade):
 	if upgrade == Constants.UpgradeType.BOXLET_DROP_RATE:
@@ -68,8 +77,10 @@ func _handle_movement():
 func _handle_hit():
 	velocity = (position - player.position) *  _HIT_SPEED
 	camera.trigger_shake()
+	_flip_tile(load("res://Tiles/Components/spike_component.tscn").instantiate(), Vector2(3, 3), 1)
 	_handle_spawns()
 	_handle_movement()
+	
 func _pick_weighted_list() -> int:
 	var weights: Array = []
 	var total_weight: float = 0.0
@@ -97,8 +108,6 @@ func _pick_move_direction():
 	var move_direction = Vector2(cos(radian), sin(radian))
 	return move_direction.normalized()
 	
- 
-		
 func _should_drop_boxlets() -> bool:
 	return randf() < _boxlet_spawn_chance
 
@@ -107,7 +116,7 @@ func _ready() -> void:
 	SignalBus.health_depleted.connect(_on_health_depleted)
 	SignalBus.game_restart.connect(_on_game_restart)
 	SignalBus.game_reset.connect(_on_game_reset)
-		
+	
 func _physics_process(delta: float) -> void:
 	if position.distance_to(_target_position) > 1.0 and not _target_reached:
 		_dir = _target_position - position
@@ -125,6 +134,7 @@ func _physics_process(delta: float) -> void:
 			var new_mask := player.collision_mask
 			new_mask &= ~2 # Turn off bit 1 (player layer)
 			player.collision_mask = new_mask
+			 
 	else:
 		if _bounced:
 			_bounced = false
@@ -157,5 +167,24 @@ func _on_game_reset():
 	
 func _on_move_cooldown_timeout() -> void:
 	var scoot_distance = randi_range(_MIN_SCOOT_DISTANCE, _MAX_SCOOT_DISTANCE)
-	_target_position = position + _pick_move_direction() * scoot_distance
+	var move_direction = _pick_move_direction()
+	var viewport_size = get_viewport_rect().size
+	var new_target_position = position + move_direction * scoot_distance
+	print(new_target_position)
+	var margin_x = 50
+	var margin_y = 30
+	_target_position.x = clamp(new_target_position.x, -viewport_size.x/2 + margin_x, viewport_size.x / 2 - margin_x)
+	_target_position.y = clamp(new_target_position.y, -viewport_size.y / 2 + margin_y, viewport_size.y / 2  - margin_y )
 	_target_reached = false
+	print(_target_position)
+func _on_tile_map_layer_ready() -> void:
+	await get_tree().create_timer(0.001).timeout
+	var cell_size = Vector2(9, 9)
+	var cell_dic: Dictionary
+	for child in tile_map.get_children():
+		
+		var child_pos = child.position
+		var cell_coords = Vector2(floor(child_pos.x / cell_size.x), floor(child_pos.y / cell_size.y))
+		cell_dic[cell_coords] = child
+		 
+	GameManager.tile_nodes = cell_dic

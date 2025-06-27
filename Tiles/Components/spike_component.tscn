@@ -1,0 +1,87 @@
+[gd_scene load_steps=15 format=3 uid="uid://bgx6x1r4uexgi"]
+
+[ext_resource type="Script" uid="uid://cwrsmxrpry17q" path="res://Tiles/Components/spike_component.gd" id="1_mettg"]
+[ext_resource type="Shader" uid="uid://bkrpjsvkuwwsg" path="res://Shaders/OutlineShader.gdshader" id="3_hrf52"]
+[ext_resource type="Texture2D" uid="uid://dxdbjx02ij2vn" path="res://Assets/Sprites/Hazards/SpikeFlip.png" id="3_mettg"]
+[ext_resource type="Script" uid="uid://cjmxk6hxcnixy" path="res://HealthSystem/hit_box.gd" id="3_mu1ar"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3y8we"]
+radius = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mu1ar"]
+shader = ExtResource("3_hrf52")
+shader_parameter/outline_color = Vector4(0, 0, 0, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrf52"]
+atlas = ExtResource("3_mettg")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mu1ar"]
+atlas = ExtResource("3_mettg")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jtggi"]
+atlas = ExtResource("3_mettg")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_18gy6"]
+atlas = ExtResource("3_mettg")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48s5q"]
+atlas = ExtResource("3_mettg")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfqrh"]
+atlas = ExtResource("3_mettg")
+region = Rect2(20, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkerp"]
+atlas = ExtResource("3_mettg")
+region = Rect2(0, 20, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_damms"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrf52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mu1ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jtggi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_18gy6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48s5q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vfqrh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkerp")
+}],
+"loop": false,
+"name": &"Flip",
+"speed": 5.0
+}]
+
+[node name="SpikeComponent" type="Node2D"]
+z_index = 1
+script = ExtResource("1_mettg")
+
+[node name="HitBox" type="Area2D" parent="."]
+script = ExtResource("3_mu1ar")
+metadata/_custom_type_script = "uid://cjmxk6hxcnixy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_3y8we")
+disabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_mu1ar")
+sprite_frames = SubResource("SpriteFrames_damms")
+animation = &"Flip"
