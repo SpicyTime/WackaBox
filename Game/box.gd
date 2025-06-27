@@ -35,13 +35,7 @@ func increase_health() -> void:
 	health_node.health = health_node.max_health
 	
  
-func _flip_tile(component, tile_coords: Vector2, direction: int) -> void:
-	var tile = GameManager.tile_nodes.get(tile_coords)
-	 
-	if tile == null:
-		return
-	  
-	tile.flip(component, direction)
+
 	
 func _apply_upgrade_effect(upgrade):
 	if upgrade == Constants.UpgradeType.BOXLET_DROP_RATE:
@@ -73,14 +67,38 @@ func _handle_movement():
 		move_cooldown.start()
 		#_target_position = _pick_move_direction()
 		print("Target Pos Changed")
-
-func _handle_hit():
+		
+func _flip_tile(component: Node2D, tile_coords: Vector2, direction: int) -> bool:
+	var tile = GameManager.tile_nodes.get(tile_coords)
+	if tile == null:
+		return false
+	tile.flip(component, direction)
+	return true
+	
+func _flip_line(component_path: String, start_tile_coords: Vector2, number_to_flip: int, line_direction: Vector2):
+	var current_tile_coords: Vector2 = start_tile_coords
+	for i in range(number_to_flip):
+		var new_component = load(component_path).instantiate()
+		if not _flip_tile(new_component, current_tile_coords, 1):
+			return
+		current_tile_coords += line_direction
+		await get_tree().create_timer(0.1).timeout
+		
+func _spike_attack() -> void:
+	pass
+func _handle_attacks() -> void:
+	pass
+func _handle_hit() -> void:
 	velocity = (position - player.position) *  _HIT_SPEED
 	camera.trigger_shake()
-	_flip_tile(load("res://Tiles/Components/spike_component.tscn").instantiate(), Vector2(3, 3), 1)
+	_cross_flip("res://Tiles/Components/spike_component.tscn", Vector2.ZERO)
 	_handle_spawns()
 	_handle_movement()
-	
+func _cross_flip(component_path: String, start_coords: Vector2) -> void:
+	_flip_line(component_path, start_coords, 100, Vector2(1, 0))
+	_flip_line(component_path, start_coords, 100, Vector2(-1, 0))
+	_flip_line(component_path, start_coords, 100, Vector2(0, 1))
+	_flip_line(component_path, start_coords, 100, Vector2(0, -1))
 func _pick_weighted_list() -> int:
 	var weights: Array = []
 	var total_weight: float = 0.0
@@ -170,13 +188,12 @@ func _on_move_cooldown_timeout() -> void:
 	var move_direction = _pick_move_direction()
 	var viewport_size = get_viewport_rect().size
 	var new_target_position = position + move_direction * scoot_distance
-	print(new_target_position)
 	var margin_x = 50
 	var margin_y = 30
 	_target_position.x = clamp(new_target_position.x, -viewport_size.x/2 + margin_x, viewport_size.x / 2 - margin_x)
 	_target_position.y = clamp(new_target_position.y, -viewport_size.y / 2 + margin_y, viewport_size.y / 2  - margin_y )
 	_target_reached = false
-	print(_target_position)
+	
 func _on_tile_map_layer_ready() -> void:
 	await get_tree().create_timer(0.001).timeout
 	var cell_size = Vector2(9, 9)
